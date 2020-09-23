@@ -1,0 +1,14 @@
+from urllib.request import urlopen,Request  #网站有拒绝爬虫设置,添加Request
+from bs4 import BeautifulSoup
+import re
+
+url='https://movie.douban.com/top250?start=0&filter='
+headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 S'
+                        'afari/537.36'}   #用户代理
+ret = Request(url,headers=headers)      #伪装
+
+html = urlopen(ret)
+bs=BeautifulSoup(html,'html.parser')
+names = bs.find_all('span',{'class':'title'})
+for name in names:
+    print(name.get_text())
