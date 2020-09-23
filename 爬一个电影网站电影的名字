@@ -12,3 +12,50 @@ bs=BeautifulSoup(html,'html.parser')
 names = bs.find_all('span',{'class':'title'})
 for name in names:
     print(name.get_text())
+#爬出的电影名中有中文有英文甚至日文
+
+
+
+
+
+from urllib.request import urlopen,Request
+from bs4 import BeautifulSoup
+import re
+url='https://movie.douban.com/top250?start=0&filter='
+headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 S'
+                        'afari/537.36'}
+ret = Request(url,headers=headers)
+html = urlopen(ret)
+bs=BeautifulSoup(html,'html.parser')
+names = bs.find_all('span',{'class':'title'})
+for name in names:
+    name = name.get_text()
+    if name[1] !='/':
+        print(name)
+#爬出的电影名只保留了中文
+ 
+ 
+ 
+ 
+
+
+        from urllib.request import urlopen,Request
+from bs4 import BeautifulSoup
+import re
+
+movies_name = []
+for page in range(0,250,25):
+    url = 'https://movie.douban.com/top250?start=50&filter='
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 S'
+                      'afari/537.36'}
+    ret = Request(url,headers=headers)
+    html = urlopen(ret)
+    bs=BeautifulSoup(html,'html.parser')
+
+    names = bs.find_all('span',{'class':'title'})
+    for name in names:
+        name =name.get_text()
+        if name[1] != '/':
+            print(name)
+ #前两个爬得都是首页的电影 ,这次将所有电影爬出(做一个循环)
