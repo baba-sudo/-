@@ -59,3 +59,27 @@ for page in range(0,250,25):
         if name[1] != '/':
             print(name)
  #前两个爬得都是首页的电影 ,这次将所有电影爬出(做一个循环)
+
+from urllib.request import urlopen, Request
+from bs4 import BeautifulSoup
+import re
+import random
+for i in range(10):
+    url = 'https://movie.douban.com/top250?start={}&filter='.format(i*25)
+    hd = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36'}
+    ret = Request(url,headers=hd)
+    html = urlopen(ret)
+    bs = BeautifulSoup(html,'html.parser')
+
+    numbers = bs.find_all("em", {"class":""})
+    for number in numbers:
+        number = number.get_text()
+    scores = bs.find_all("span", {"property":"v:average"})
+    for score in scores:
+        score = score.get_text()
+    names = bs.find_all("span", {"class":"title"})
+    for name in names:
+        name = name.get_text()
+        if name[1] != '/':
+            print(number,name,score)
+
