@@ -1,0 +1,59 @@
+爬取内容：财富500强http://www.fortunechina.com/fortune500/c/2020-08/10/content_37214.htm
+
+
+import requests
+from bs4 import BeautifulSoup  # 网页解析  获取数据
+r = requests.get('http://www.fortunechina.com/fortune500/c/2020-08/10/content_372148.htm')
+#以下为对请求回的信息进行'utf-8'编码
+r.encoding = 'utf-8'
+demo = r.text
+soup=BeautifulSoup(demo,'html.parser')
+for i in soup.tbody.find_all('tr'):
+    print(i.contents[1].string,
+        i.contents[5].string,
+        i.contents[7].string,
+        i.contents[9].string,
+        i.contents[3].string,)
+
+
+
+
+#多一个链接
+from urllib.request import urlopen, Request
+from bs4 import BeautifulSoup
+url=("http://www.fortunechina.com/fortune500/c/2020-08/10/content_372148.htm")
+header = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36'}
+ret = Request(url, headers=header)
+html=urlopen(ret)
+bs = BeautifulSoup(html, 'html.parser')
+
+lists = bs.find('tbody').find_all('tr')
+
+listall=[]
+for i in lists[0:]:        #tr[1:]遍历第1列到最后一列，表头为第0列
+    td = i.find_all('td')#td表格
+    date = td[0].get_text().strip()           #遍历排名
+    #date = td[0].get_text().strip().replace(',')
+    complem_name = td[1].get_text().strip()  #遍历学校名称
+    region = td[2].get_text().strip()            #遍历省市
+    type = td[3].get_text().strip()       #遍历类型
+    score = td[4].get_text().strip()                #遍历总分
+    a = i.find_all('a')         #a表格
+    file = a[0].get('href')     #遍历链接
+    link = "http://www.fortunechina.com/global500/1/2020{0}".format(file)
+
+
+    def printUnivList(ulist, num):
+        tplt = "{0:^10}\t{1:{4}^10}\t{2:^10}\t{3:^10}\t{4:^10}"
+        print(tplt.format("排名",  "收入", "利润","链接" ,"公司名称",chr(12288)))
+        for a in range(num):
+            u = ulist[a]
+            print(tplt.format(u[0], u[1], u[2], u[3],u[4] ,chr(12288)))
+    # print(date, region, type, score, link, complem_name)
+    # list = date, region, type, score, link, complem_name
+    # listall.append(list)
+    # file = []
+    # list = []
+遗留问题 无法对齐
+
+
