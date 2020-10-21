@@ -1,1 +1,21 @@
 新闻网  wanghttp://www.cfbond.com/cfkx/index.html
+from urllib.request import urlopen, Request
+from bs4 import BeautifulSoup  # 网页解析  获取数据
+import re  # 正则表达式 进行文字匹配
+import random
+
+url = 'http://www.cfbond.com/cfkx/index.html'
+hd = {
+'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36'}
+ret = Request(url, headers=hd)
+html = urlopen(ret)
+bs = BeautifulSoup(html, 'html.parser')
+
+names = bs.find_all("h2",{"class":"pubList_tit"})
+for name in names:
+    name = name.get_text()
+    print(name)
+neirongs = bs.find_all("p",{"class":"pubList_txt"})
+for neirong in neirongs:
+    neirong = neirong.get_text()
+#    print(neirong)
